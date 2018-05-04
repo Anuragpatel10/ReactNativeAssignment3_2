@@ -1,6 +1,6 @@
 import React from 'react'
 import {View, Text, ListView, Image} from 'react-native'
-import {Container, Content, Card, CardItem, Body,Left} from 'native-base';
+import {Container, Content, Card, CardItem, Body, Left} from 'native-base';
 
 import Lightbox from 'react-native-lightbox'
 import Styles from './styles';
@@ -62,25 +62,23 @@ class photoScreen extends React.Component {
 
     _renderRow(rowData) {
         return (
-            <View>
-                <Content>
-                    <Card>
-                        <CardItem cardBody>
-                            <Lightbox>
-                                <Image
-                                    style={Styles.image}
-                                    source={{uri: rowData.image}}
-                                />
-                            </Lightbox>
-                        </CardItem>
-                        <CardItem>
-                            <Left>
-                                <Text>{rowData.title}</Text>
-                            </Left>
-                        </CardItem>
-                    </Card>
-                </Content>
-            </View>
+            <Content>
+                <Card>
+                    <CardItem cardBody>
+                        <Lightbox>
+                            <Image
+                                style={Styles.image}
+                                source={{uri: rowData.image}}
+                            />
+                        </Lightbox>
+                    </CardItem>
+                    <CardItem>
+                        <Left>
+                            <Text>{rowData.title}</Text>
+                        </Left>
+                    </CardItem>
+                </Card>
+            </Content>
         )
     }
 
@@ -88,31 +86,36 @@ class photoScreen extends React.Component {
     _onEndReached() {
         let _self = this;
         setTimeout(() => {
-            this.updateData();
+            _self.updateData();
         }, 500)
     }
 
     updateData() {
+        let _self = this;
+
         let data = initialData.concat(this.state.data);
 
         if (data.length < 50) {
-            this.setState({
+            _self.setState({
                 data: data,
-                dataSource: this.ds.cloneWithRows(data)
+                dataSource: _self.ds.cloneWithRows(data)
             });
         }
     }
 
     render() {
         return (
-            <ListView
-                dataSource={this.state.dataSource}
-                renderRow={this._renderRow.bind(this)}
-                renderHeader={this._renderHeader.bind(this)}
-                onEndReached={this._onEndReached.bind(this)}
-                stickySectionHeadersEnabled={true}
-                stickyHeaderIndices={[0]}
-            />
+            <Container>
+                <ListView
+                    dataSource={this.state.dataSource}
+                    renderRow={this._renderRow.bind(this)}
+                    renderHeader={this._renderHeader.bind(this)}
+                    onEndReached={this._onEndReached.bind(this)}
+                    stickySectionHeadersEnabled={true}
+                    stickyHeaderIndices={[0]}
+                />
+
+            </Container>
         )
     }
 }
